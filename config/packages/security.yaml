@@ -1,0 +1,38 @@
+security:
+    providers:
+        user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
+    encoders:
+        App\Entity\User: bcrypt
+    access_control:
+        - { path: ^/user, roles: ROLE_USER }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            anonymous: ~
+            http_basic: ~
+            provider: user_provider
+            form_login:
+                login_path: login
+                check_path: login
+                username_parameter: _email
+                password_parameter: _password
+                always_use_default_target_path: false
+                default_target_path: /user/home
+                target_path_parameter: _target_path
+                use_referer: false
+                post_only: true
+                remember_me: false
+                require_previous_session: false
+            logout:
+#                csrf_parameter: csrf_token
+#                csrf_token_generator: ~
+#                csrf_token_id: logout
+                path: /logout
+                target: /
+                success_handler: ~
+                invalidate_session: true

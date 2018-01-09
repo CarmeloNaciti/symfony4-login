@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="{{ asset('node_modules/materialize-css/dist/css/materialize.min.css') }}" rel="stylesheet">
+        {% endblock %}
+    </head>
+    <body>
+        {% block navigation %}
+            <nav>
+                <div class="nav-wrapper">
+                    <ul id="nav-mobile" class="right">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li><a href="{{ path('logout') }}">Logout</a></li>
+                        {% else %}
+                            {% if app.request.get('_route') is not same as('user_registration') %}
+                                <li><a href="{{ path('user_registration') }}">Register</a></li>
+                            {% endif %}
+                            {% if app.request.get('_route') is not same as('login') %}
+                                <li><a href="{{ path('login') }}">Login</a></li>
+                            {% endif %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        {% endblock %}
+
+        <div class="container">
+            {% block body %}{% endblock %}
+        </div>
+        {% block javascripts %}
+            <script src="{{ asset('node_modules/jquery/dist/jquery.min.js') }}"></script>
+            <script src="{{ asset('node_modules/materialize-css/dist/js/materialize.min.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>

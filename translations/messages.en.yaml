@@ -1,0 +1,6 @@
+login:
+    title: 'Login'
+    email: 'Email'
+    password: 'Password'
+    forgot_password: 'Forgot Password'
+    submit: 'Login'

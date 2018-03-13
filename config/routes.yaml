@@ -10,6 +10,10 @@ logout:
     path: /logout
     controller: App\Controller\SecurityController::logout
 
+forgot_password:
+    path: /forgot_password
+    controller: App\Controller\SecurityController:forgotPassword
+
 user_registration:
     path: /register
     controller: App\Controller\RegistrationController::register

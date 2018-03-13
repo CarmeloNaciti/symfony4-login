@@ -4,3 +4,6 @@ login:
     password: 'Password'
     forgot_password: 'Forgot Password'
     submit: 'Login'
+forgot_password:
+    title: 'Resend Password'
+    send: 'Send'

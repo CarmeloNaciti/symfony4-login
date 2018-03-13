@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="card-action right-align">
-                    <a href="#">{{ 'login.forgot_password'|trans }}</a>
+                    <a href="{{ path('forgot_password', {'email': last_username}) }}">{{ 'login.forgot_password'|trans }}</a>
                     <a href="#" id="submit-btn">{{ 'login.submit'|trans }}</a>
                 </div>
             </div>

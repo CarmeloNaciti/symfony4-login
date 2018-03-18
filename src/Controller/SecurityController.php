@@ -70,12 +70,12 @@ class SecurityController extends Controller
         ]);
     }
 
-    public function resetPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $timestamp, string $token, CacheManager $cache): Response
+    public function resetPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, CacheManager $cache, string $token, string $id): Response
     {
         $user = new User();
 
         try {
-            $email = $cache->getEmailByToken($timestamp, $token);
+            $email = $cache->getEmailByToken($id, $token);
             $user = $this->getDoctrine()
                 ->getRepository(User::class)
                 ->findOneBy(['email' => $email]);

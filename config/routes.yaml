@@ -15,7 +15,7 @@ forgot_password:
     controller: App\Controller\SecurityController:forgotPassword
 
 reset_password:
-    path: /reset-password/{timestamp}/{token}
+    path: /reset-password/{token}/{id}
     controller: App\Controller\SecurityController:resetPassword
 
 user_registration:

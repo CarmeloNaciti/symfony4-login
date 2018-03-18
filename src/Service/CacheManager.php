@@ -25,9 +25,9 @@ class CacheManager implements CacheInterface
         $this->client = new PredisClient();
     }
 
-    public function setToken(string $timestamp, string $email): string
+    public function setToken(string $id, string $email): string
     {
-        $key = sprintf('token:%s', $timestamp);
+        $key = sprintf('token:%s', $id);
         $token = bin2hex(random_bytes(self::TOKEN_LENGTH));
 
         $this->client->set($key, serialize(['email' => $email, 'token' => $token]));

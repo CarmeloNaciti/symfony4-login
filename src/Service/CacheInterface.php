@@ -14,5 +14,5 @@ interface CacheInterface
 
     public function setToken(string $timestamp, string $email): string;
 
-    public function getEmailByToken(string $timestamp, string $token): string;
+    public function getEmailByToken(string $id, string $token): string;
 }

@@ -36,10 +36,10 @@ class EmailManager
 
     public function sendPasswordReset(string $email): int
     {
-        $timestamp = Carbon::now()->timestamp;
-        $token = $this->cache->setToken($timestamp, $email);
+        $id = uniqid('', true);
+        $token = $this->cache->setToken($id, $email);
         // @todo - Add base url
-        $url = $this->router->generate('reset_password', ['timestamp' => $timestamp, 'token' => $token]);
+        $url = $this->router->generate('reset_password', ['token' => $token, 'id' => $id]);
 
         $message = (new \Swift_Message())
             ->setSubject('Password Reset Requested')

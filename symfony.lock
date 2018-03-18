@@ -77,6 +77,9 @@
     "monolog/monolog": {
         "version": "1.23.0"
     },
+    "nesbot/carbon": {
+        "version": "1.24.2"
+    },
     "ocramius/proxy-manager": {
         "version": "2.2.0"
     },
@@ -88,6 +91,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
+    },
+    "predis/predis": {
+        "version": "2.0-dev"
     },
     "psr/cache": {
         "version": "1.0.1"

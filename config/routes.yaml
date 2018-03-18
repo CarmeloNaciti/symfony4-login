@@ -11,8 +11,12 @@ logout:
     controller: App\Controller\SecurityController::logout
 
 forgot_password:
-    path: /forgot_password
+    path: /forgot-password
     controller: App\Controller\SecurityController:forgotPassword
+
+reset_password:
+    path: /reset-password/{timestamp}/{token}
+    controller: App\Controller\SecurityController:resetPassword
 
 user_registration:
     path: /register

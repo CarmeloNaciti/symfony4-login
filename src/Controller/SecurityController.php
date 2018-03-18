@@ -10,15 +10,18 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\ForgotPasswordType;
+use App\Form\ResetPasswordType;
+use App\Service\CacheManager;
 use App\Service\EmailManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends Controller
 {
-    public function login(Request $request, AuthenticationUtils $authUtils): Response
+    public function login(AuthenticationUtils $authUtils): Response
     {
         // get the login error if there is one
         $error = $authUtils->getLastAuthenticationError();
@@ -65,5 +68,40 @@ class SecurityController extends Controller
             'form' => $form->createView(),
             'success' => $success ?? false,
         ]);
+    }
+
+    public function resetPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder, string $timestamp, string $token, CacheManager $cache): Response
+    {
+        $user = new User();
+
+        try {
+            $email = $cache->getEmailByToken($timestamp, $token);
+            $user = $this->getDoctrine()
+                ->getRepository(User::class)
+                ->findOneBy(['email' => $email]);
+        } catch (\Exception $e) {
+            // @todo - Handle Exception
+        }
+
+        $form = $this->createForm(ResetPasswordType::class, $user);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+            $user->setIsActive(true);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirectToRoute('login');
+        }
+
+        return $this->render(
+            'security/reset_password.html.twig',           [
+                'form' => $form->createView()
+            ]
+        );
     }
 }

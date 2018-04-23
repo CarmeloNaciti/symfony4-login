@@ -11,6 +11,8 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\ForgotPasswordType;
 use App\Form\ResetPasswordType;
+use App\Form\ChangePasswordType;
+use App\Form\ProfileType;
 use App\Service\CacheManager;
 use App\Service\EmailManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -100,6 +102,53 @@ class SecurityController extends Controller
 
         return $this->render(
             'security/reset_password.html.twig',           [
+                'form' => $form->createView()
+            ]
+        );
+    }
+    
+    public function changePassword(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        # Get user from session
+        $user = $this->get('security.token_storage')->getToken()->getUser(); 
+        $form = $this->createForm(ChangePasswordType::class, $user);
+        
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $password = $passwordEncoder->encodePassword($user, $user->getPlainPassword());
+            $user->setPassword($password);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            
+            return $this->redirectToRoute('user_home');
+        }
+        return $this->render(
+            'security/change_password.html.twig',           [
+                'form' => $form->createView()
+            ]
+        );
+    }
+    
+    public function editProfile(Request $request): Response
+    {
+        # Get user from session
+        $user = $this->get('security.token_storage')->getToken()->getUser(); 
+        $form = $this->createForm(ProfileType::class, $user);
+        
+        $form->handleRequest($request);
+        
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+            
+            return $this->redirectToRoute('user_home');
+        }
+        return $this->render(
+            'security/edit_profile.html.twig',           [
                 'form' => $form->createView()
             ]
         );

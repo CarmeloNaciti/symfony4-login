@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>Symfony4 | {% block title %}Welcome!{% endblock %}</title>
         {% block stylesheets %}
             <link href="{{ asset('node_modules/materialize-css/dist/css/materialize.min.css') }}" rel="stylesheet">
         {% endblock %}
@@ -13,6 +13,8 @@
                 <div class="nav-wrapper">
                     <ul id="nav-mobile" class="right">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li><a href="{{ path('edit_profile') }}">Edit Profile</a></li>
+                            <li><a href="{{ path('change_password') }}">Change Password</a></li>
                             <li><a href="{{ path('logout') }}">Logout</a></li>
                         {% else %}
                             {% if app.request.get('_route') is not same as('user_registration') %}

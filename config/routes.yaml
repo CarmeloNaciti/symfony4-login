@@ -17,6 +17,14 @@ forgot_password:
 reset_password:
     path: /reset-password/{token}/{id}
     controller: App\Controller\SecurityController:resetPassword
+    
+change_password:
+    path: /user/change-password/
+    controller: App\Controller\SecurityController:changePassword
+    
+edit_profile:
+    path: /user/profile/
+    controller: App\Controller\SecurityController:editProfile
 
 user_registration:
     path: /register
